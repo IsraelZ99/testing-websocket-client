@@ -16,4 +16,21 @@ This project is about websocket connection and is a tool to test it.
 
 ## Configuration
 1. In the polyfills.ts at the bottom add:
-    (window as any).global = window;
+    `(window as any).global = window;`
+
+## Use
+1. Run project with: ng serve.
+2. Add your server url and token.
+3. Press **connect** button.
+### To subscribe:
+* Add destination prefix.
+* Click on **Subscribe** button.
+### To unsubscribe from something:
+* Click on **Unsubscribe** button.
+### To send something:
+* Add destination prefix.
+* Add payload.
+* Click on **Send** button.
+### To disconnect from websocket:
+* Click on **Disconnect** button
+
