@@ -1,0 +1,106 @@
+<div class="container-xxl">
+    <div class="col text-center mt-4 mb-3">
+        <h2> Testing websocket connections </h2>
+    </div>
+    <div class="col mt-4">
+        <form [formGroup]="connectionForm">
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="server-url">Server url</span>
+                <input type="text" class="form-control" placeholder="http://localhost:8080/api/socket" aria-label="http://localhost:8080/api/socket" aria-describedby="server-url"
+                    formControlName="serverUrl">
+            </div>
+            <div class="input-group mb-3">
+                <span class="input-group-text" id="token">Token</span>
+                <input type="text" class="form-control" placeholder="eyJhbGciOiJIUzUxMiJ9.eyJzdWIiOiIzMSIsImF1dGhvcml0aWVzIjpbIkxpZGVyIGRlIGdydXBvIl0sImlhdCI6MTY0MjQ0OTEyMH0.NRyivT6Kqlk-cnBrQI6_lJCo5ow6NJ14DNvbmnqxgaohMkwLwLndPF6guq6r3bYX2Wn9FOTV85YPj1oYP2qK0Q" aria-label="Token" aria-describedby="token"
+                    formControlName="token">
+            </div>
+            <div class="row">
+                <div class="col-3">
+                    <button type="button" class="btn btn-info" [disabled]="!connectionForm.valid"
+                        (click)="connectWebsocket()">Connect</button>
+                </div>
+                <div class="col-3">
+                    <button type="button" class="btn btn-danger" [disabled]="!connectionForm.valid"
+                        (click)="disconnectToWebsocket()">Disconnect</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <div class="col mt-4">
+        <div class="row">
+            <div class="col">
+                <div class="alert alert-success" role="alert">
+                    RETRIEVED
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th scope="col">Subscription</th>
+                                    <th scope="col">Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let subscription of getSubscriptions">
+                                    <th scope="row"> {{ subscription }} </th>
+                                    <td> <button class="btn btn-success"
+                                            (click)="unsubscribeByDestinationPath(subscription)"> Unsubscribe </button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col">
+                        <div class="input-group">
+                            <span class="input-group-text" id="destination-prefix">Destination prefix</span>
+                            <input type="text" class="form-control" placeholder="/chat/incoming" aria-label="Url"
+                                aria-describedby="destination-prefix" [formControl]="destinationOnMessagePrefix">
+                        </div>
+                    </div>
+                    <div class="col-3">
+                        <button type="button" class="btn btn-warning"
+                            [disabled]="!connectionForm.valid || !destinationOnMessagePrefix.valid"
+                            (click)="retrieve()">Subscribe</button>
+                    </div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let message of messagesRetrieved">{{ message | json }}</li>
+                </ul>
+            </div>
+            <div class="col">
+                <div class="alert alert-success" role="alert">
+                    SENDED
+                </div>
+                <div class="col">
+                    <div class="row">
+                        <form [formGroup]="sendForm">
+                            <div class="col">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="destination-prefix-send">Destination
+                                        prefix</span>
+                                    <input type="text" class="form-control" placeholder="/chat/send" aria-label="Url"
+                                        aria-describedby="destination-prefix-send" formControlName="destination">
+                                </div>
+                            </div>
+                            <div class="input-group mb-3">
+                                <span class="input-group-text" id="payload">Payload</span>
+                                <textarea class="form-control" rows="3" aria-describedby="payload" formControlName="payload"></textarea>
+                            </div>
+                            <div class="col-3">
+                                <button type="button" class="btn btn-warning"
+                                    [disabled]="!sendForm.valid || !connectionForm.valid" (click)="send()">Send</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+                <ul class="list-group">
+                    <li class="list-group-item" *ngFor="let message of messagesSended">{{ message | json }}</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
