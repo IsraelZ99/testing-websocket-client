@@ -30,7 +30,7 @@ export class WebsocketClientService {
 
   public _connection() {
     const socketUrl = `${this.server}?token=${this.token}`;
-    this.client = StompJs.over(new SockJS(socketUrl));
+    this.client = StompJs.over(new SockJS(socketUrl, null, { timeout: 25000 }));
     // this.client.debug = (str) => {}; 
     this.state = new BehaviorSubject<SocketClientState>(SocketClientState.ATTEMPTING);
     this.client.connect({}, () => {
